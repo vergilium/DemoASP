@@ -35,6 +35,7 @@ namespace DemoASP.WebAPP
             services.AddTransient<IFacultyRepository, FacultyRepository>();
             services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddTransient<IStudentRepository, StudentRepository>();
+            services.AddTransient<IMarkRepository, MarkRepository>();
 
 
         }
@@ -69,7 +70,7 @@ namespace DemoASP.WebAPP
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<MyDbContext>();
-                //context.Database.EnsureDeleted();
+                context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
             }
         }

@@ -15,4 +15,7 @@ namespace DomainRepositories
     public interface IStudentRepository : IDbRepository<Student>
     {
     }
+    public interface IMarkRepository : IDbRepository<Mark>
+    {
+    }
 }

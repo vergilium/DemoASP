@@ -27,10 +27,36 @@ namespace DemoASP.WebAPP.Controllers
         {
             return View(_repository
                 .AllItems
-                .Include(s=>s.Group)
-                .ThenInclude(g=>g.Faculty)
-                .Select(s=>new StudentVM(s)));
+                .Include(s => s.Group)
+                .ThenInclude(g => g.Faculty)
+                .Select(s => new StudentVM(s)));
         }
+        public IActionResult Show(int? id)
+        {
+            if (id.HasValue)
+            {
+                var stud = _repository
+                .AllItems
+                .Include(s => s.Marks)
+                .Include(s => s.Group)
+                .ThenInclude(g => g.Faculty)                
+                .FirstOrDefault(s => s.Id == id.Value);
+                
+                if (stud != null)
+                {
+                    return View(new StudentVM(stud));
+                }
+            }
+            return RedirectToAction("Error");
+
+        }
+
+        public async Task<IActionResult> Add(StudentVM stud)
+        {
+            await _repository.AddItemAsync(stud);
+            return RedirectToAction("List");
+        }
+      
 
         public IActionResult Privacy()
         {
