@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DomainContext;
+using DomainRepositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +27,16 @@ namespace DemoASP.WebAPP
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            
+            services.AddDbContext<MyDbContext>(options => options.UseSqlServer(
+                Configuration.GetConnectionString("MsSqlConnection"),
+                optionBuilder => optionBuilder.MigrationsAssembly("DemoASP.WebAPP")));
+
+            services.AddTransient<IFacultyRepository, FacultyRepository>();
+            services.AddTransient<IGroupRepository, GroupRepository>();
+            services.AddTransient<IStudentRepository, StudentRepository>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,8 +63,15 @@ namespace DemoASP.WebAPP
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Students}/{action=List}/{id?}");
             });
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<MyDbContext>();
+                //context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+            }
         }
     }
 }

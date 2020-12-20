@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +13,6 @@
     <ProjectReference Include="..\DemoASP.Abstractions\DemoASP.Abstractions.csproj" />
     <ProjectReference Include="..\DemoASP.DBContext\DemoASP.DBContext.csproj" />
     <ProjectReference Include="..\DemoASP.Entities\DemoASP.Entities.csproj" />
-    <ProjectReference Include="..\DemoASP.Repositories\DemoASP.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

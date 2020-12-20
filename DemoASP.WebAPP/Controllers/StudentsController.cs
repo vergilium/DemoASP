@@ -6,21 +6,30 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using DemoASP.WebAPP.Models;
+using DomainRepositories;
+using DemoASP.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DemoASP.WebAPP.Controllers
 {
-    public class HomeController : Controller
+    public class StudentsController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<StudentsController> _logger;
+        private IStudentRepository _repository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public StudentsController(ILogger<StudentsController> logger, IStudentRepository repository)
         {
             _logger = logger;
+            _repository = repository;
         }
 
-        public IActionResult Index()
+        public IActionResult List()
         {
-            return View();
+            return View(_repository
+                .AllItems
+                .Include(s=>s.Group)
+                .ThenInclude(g=>g.Faculty)
+                .Select(s=>new StudentVM(s)));
         }
 
         public IActionResult Privacy()
