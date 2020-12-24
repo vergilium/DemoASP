@@ -17,5 +17,6 @@ namespace Entities
         public string Name { get; set; }
         public List<TS> TS { get; set; }
         public List<Teacher> Teachers { get; set; } 
+        public List<Mark> Marks { get; set; }
     }
 }

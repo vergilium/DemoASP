@@ -66,8 +66,18 @@ namespace DomainContext
                     .WithMany(t => t.TS)
                     .HasForeignKey(ts => ts.TeacherId)
                 );
-            
-            
+
+            modelBuilder.Entity<Mark>()
+                .HasOne<TS>(m => new TS { Subject = m.Subject, Teacher = m.Teacher })
+                .WithMany(s => s.Marks)
+                .HasForeignKey(m => new { m.TeacherId, m.SubjectId })
+                .HasPrincipalKey(p=>new { p.TeacherId, p.SubjectId });
+                
+
+            //modelBuilder.Entity<Mark>()
+            //    .HasOne<TS>(m => m.TS)
+            //    .WithMany(ts => ts.Marks)
+            //    .HasForeignKey(m => new { m.Teacher, m.SubjectId });
 
             base.OnModelCreating(modelBuilder);
 
@@ -111,13 +121,13 @@ namespace DomainContext
 
 
 
-            modelBuilder.Entity<Mark>().HasData(
-                new Mark { Id = 1, Value = 12, StudentId = 1 },
-                new Mark { Id = 2, Value = 11, StudentId = 1 },
-                new Mark { Id = 3, Value = 10, StudentId = 1 },
-                new Mark { Id = 4, Value = 9, StudentId = 1 },
-                new Mark { Id = 5, Value = 2, StudentId = 1 },
-                new Mark { Id = 6, Value = 12, StudentId = 1 });
+            //modelBuilder.Entity<Mark>().HasData(
+            //    new Mark { Id = 1, Value = 12, StudentId = 1 },
+            //    new Mark { Id = 2, Value = 11, StudentId = 1 },
+            //    new Mark { Id = 3, Value = 10, StudentId = 1 },
+            //    new Mark { Id = 4, Value = 9, StudentId = 1 },
+            //    new Mark { Id = 5, Value = 2, StudentId = 1 },
+            //    new Mark { Id = 6, Value = 12, StudentId = 1 });
         }
     }
 }
