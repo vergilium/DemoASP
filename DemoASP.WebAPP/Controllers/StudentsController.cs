@@ -9,6 +9,7 @@ using DemoASP.WebAPP.Models;
 using DomainRepositories;
 using DemoASP.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DemoASP.WebAPP.Controllers
 {
@@ -51,6 +52,7 @@ namespace DemoASP.WebAPP.Controllers
 
         }
 
+        [Authorize(Policy = "RequireAdministrator")]
         public async Task<IActionResult> Add(StudentVM stud)
         {
             await _repository.AddItemAsync(stud);

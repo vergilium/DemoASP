@@ -1,4 +1,5 @@
 ﻿using DomainRepositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,6 +22,7 @@ namespace DemoASP.WebAPP.Controllers
         {
             return View();
         }
+        [Authorize(Policy = "RequireAdministrator")]
         public IActionResult ShowAddStudentForm()
         {
             return View(_repository.AllItems.Include(g=>g.Faculty));
