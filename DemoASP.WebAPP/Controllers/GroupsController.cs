@@ -11,7 +11,7 @@ namespace DemoASP.WebAPP.Controllers
 {
     public class GroupsController : Controller
     {
-        private IGroupRepository _repository;
+        private readonly IGroupRepository _repository;
 
         public GroupsController(IGroupRepository repository)
         {

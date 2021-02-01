@@ -12,14 +12,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace DemoASP.WebAPP
 {
     public class Startup
     {
+        private readonly string _connectionString;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            string postgresPassword = Environment.GetEnvironmentVariable("PGPASSWORD") ?? "postgres";
+            _connectionString = configuration.GetConnectionString("DBConnection").Replace("###", postgresPassword);
         }
 
         public IConfiguration Configuration { get; }
@@ -30,11 +34,18 @@ namespace DemoASP.WebAPP
             //Controllers and Views for Login
             services.AddControllersWithViews();
 
-            services.AddDbContext<MyDbContext>(options => options.UseSqlServer(
-                Configuration.GetConnectionString("MsSqlConnection"),
-                optionBuilder => optionBuilder.MigrationsAssembly("DemoASP.WebAPP")));
+            services.AddDbContext<MyDbContext>(options => { 
+                options.EnableSensitiveDataLogging();
+                options.UseNpgsql(_connectionString,
+                    innerOptions =>
+                    {
+                        innerOptions.MigrationsAssembly("DemoASP.WebAPP");
+                        innerOptions.SetPostgresVersion(new Version(12, 10));
+                    });
 
-            //services.AddDatabaseDeveloperPageExceptionFilter();
+            }, ServiceLifetime.Transient);
+
+        //services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddTransient<IFacultyRepository, FacultyRepository>();
             services.AddTransient<IGroupRepository, GroupRepository>();
