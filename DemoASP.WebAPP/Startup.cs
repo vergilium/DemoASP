@@ -23,7 +23,7 @@ namespace DemoASP.WebAPP
         {
             Configuration = configuration;
             string postgresPassword = Environment.GetEnvironmentVariable("PGPASSWORD") ?? "postgres";
-            _connectionString = configuration.GetConnectionString("DBConnection").Replace("###", postgresPassword);
+            _connectionString = configuration.GetConnectionString("DBConnection"); //.Replace("###", postgresPassword);
         }
 
         public IConfiguration Configuration { get; }
