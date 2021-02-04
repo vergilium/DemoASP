@@ -10,7 +10,7 @@ namespace DemoASP.WebAPP.Controllers
 {
     public class MarksController : Controller
     {
-        private IMarkRepository _repository;
+        private readonly IMarkRepository _repository;
 
         public MarksController(IMarkRepository repository)
         {
@@ -23,13 +23,18 @@ namespace DemoASP.WebAPP.Controllers
 
         public async Task<IActionResult> Add(int? studentId, int? mark)
         {
-            await _repository.AddItemAsync(
-                new Entities.Mark
-                {
-                    StudentId = studentId.Value,
-                    Value=mark.Value
-                });
-            return RedirectToAction("Show", "Students", new { id = studentId });
+            if (studentId != null)
+            {
+                if (mark != null)
+                    await _repository.AddItemAsync(
+                        new Entities.Mark
+                        {
+                            StudentId = studentId.Value,
+                            Value = mark.Value
+                        });
+                
+            }
+            return RedirectToAction("Show", "Students", new {id = studentId});
         }
     }
 }

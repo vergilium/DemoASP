@@ -129,19 +129,17 @@ namespace DemoASP.WebAPP
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Students}/{action=List}/{id?}");
+                    pattern: "{controller=Home}/{action?}/{id?}");
                 
                 //for login
                 endpoints.MapRazorPages();
             });
 
-            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-            {
-                var context = serviceScope.ServiceProvider.GetRequiredService<MyDbContext>();
-                //context.Database.EnsureDeleted();
-                //context.Database.EnsureCreated();
-                //context.Database.Migrate();
-            }
+            using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
+            var context = serviceScope.ServiceProvider.GetRequiredService<MyDbContext>();
+            //context.Database.EnsureDeleted();
+            //context.Database.EnsureCreated();
+            //context.Database.Migrate();
         }
     }
 }
