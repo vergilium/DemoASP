@@ -51,6 +51,8 @@ namespace DemoASP.WebAPP
             services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddTransient<IStudentRepository, StudentRepository>();
             services.AddTransient<IMarkRepository, MarkRepository>();
+            services.AddTransient<ISubjectRepository, SubjectRepository>();
+            services.AddTransient<ITeacherRepository, TeacherRepository>();
 
             services.AddDefaultIdentity<IdentityUser>(
                    options => options.SignIn.RequireConfirmedAccount = true)
@@ -129,14 +131,18 @@ namespace DemoASP.WebAPP
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action?}/{id?}");
+                    pattern: "{controller=Home}/{action=index}/{id?}");
                 
                 //for login
                 endpoints.MapRazorPages();
             });
 
-            using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
-            var context = serviceScope.ServiceProvider.GetRequiredService<MyDbContext>();
+            using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()?.CreateScope();
+            if (serviceScope != null)
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<MyDbContext>();
+            }
+
             //context.Database.EnsureDeleted();
             //context.Database.EnsureCreated();
             //context.Database.Migrate();

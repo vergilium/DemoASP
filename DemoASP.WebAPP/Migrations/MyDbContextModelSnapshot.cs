@@ -49,6 +49,40 @@ namespace DemoASP.WebAPP.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Entities.FS", b =>
+                {
+                    b.Property<int>("facultyId")
+                        .HasColumnType("integer")
+                        .HasColumnName("faculty_id");
+
+                    b.Property<int>("subjectId")
+                        .HasColumnType("integer")
+                        .HasColumnName("subject_id");
+
+                    b.HasKey("facultyId", "subjectId");
+
+                    b.HasIndex("subjectId");
+
+                    b.ToTable("faculty_subject");
+
+                    b.HasData(
+                        new
+                        {
+                            facultyId = 1,
+                            subjectId = 1
+                        },
+                        new
+                        {
+                            facultyId = 1,
+                            subjectId = 2
+                        },
+                        new
+                        {
+                            facultyId = 2,
+                            subjectId = 3
+                        });
+                });
+
             modelBuilder.Entity("Entities.Faculty", b =>
                 {
                     b.Property<int>("Id")
@@ -591,6 +625,25 @@ namespace DemoASP.WebAPP.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Entities.FS", b =>
+                {
+                    b.HasOne("Entities.Faculty", "Faculty")
+                        .WithMany("FS")
+                        .HasForeignKey("facultyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Subject", "Subject")
+                        .WithMany("FS")
+                        .HasForeignKey("subjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Faculty");
+
+                    b.Navigation("Subject");
+                });
+
             modelBuilder.Entity("Entities.Group", b =>
                 {
                     b.HasOne("Entities.Faculty", "Faculty")
@@ -732,6 +785,8 @@ namespace DemoASP.WebAPP.Migrations
 
             modelBuilder.Entity("Entities.Faculty", b =>
                 {
+                    b.Navigation("FS");
+
                     b.Navigation("Groups");
                 });
 
@@ -747,6 +802,8 @@ namespace DemoASP.WebAPP.Migrations
 
             modelBuilder.Entity("Entities.Subject", b =>
                 {
+                    b.Navigation("FS");
+
                     b.Navigation("Marks");
 
                     b.Navigation("TS");

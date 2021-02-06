@@ -16,6 +16,7 @@ namespace DomainContext
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<TS> TS { get; set; }
+        public DbSet<FS> FS { get; set; }
         public MyDbContext(DbContextOptions options) : base(options)
         {
         }

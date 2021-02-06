@@ -18,4 +18,12 @@ namespace DomainRepositories
     public interface IMarkRepository : IDbRepository<Mark>
     {
     }
+    public interface ITeacherRepository : IDbRepository<Teacher>
+    {
+        
+    }
+    public interface ISubjectRepository : IDbRepository<Subject>
+    {
+        
+    }
 }

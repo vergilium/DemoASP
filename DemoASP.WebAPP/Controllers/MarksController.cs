@@ -21,20 +21,21 @@ namespace DemoASP.WebAPP.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Add(int? studentId, int? mark)
+        public async Task<IActionResult> Add(int? studentId, int? mark, int? subject)
         {
             if (studentId != null)
             {
                 if (mark != null)
-                    await _repository.AddItemAsync(
-                        new Entities.Mark
-                        {
-                            StudentId = studentId.Value,
-                            Value = mark.Value
-                        });
-                
+                    if (subject != null)
+                        await _repository.AddItemAsync(
+                            new Entities.Mark
+                            {
+                                StudentId = studentId.Value,
+                                SubjectId = subject.Value,
+                                Value = mark.Value
+                            });
             }
-            return RedirectToAction("Show", "Students", new {id = studentId});
+            return RedirectToAction("Show", "Subject", new {id = studentId});
         }
     }
 }

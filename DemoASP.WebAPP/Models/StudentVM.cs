@@ -20,6 +20,19 @@ namespace DemoASP.Models
             MiddleName = s.MiddleName;            
             GroupName = s.Group.Name;
             FacultyName = s.Group.Faculty.Name;
+            Subjects = s.Group.Faculty.Subjects?.Select(
+                subj => new Subject
+                {
+                    Id = subj.Id,
+                    Name = subj.Name
+                  //  Teachers = (List<Teacher>) subj.Teachers.Select( t => new Teacher
+                  //  {
+                  //      Id = t.Id,
+                  //      FirstName = t.FirstName,
+                  //      LastName = t.LastName,
+                  //      MiddleName = t.MiddleName
+                  //  }).ToList()
+                }).ToList();
             var marks = s.Marks?.Select(m => m.Value).ToArray();
             if(marks!=null) Marks.AddRange(marks);
         }
@@ -40,10 +53,12 @@ namespace DemoASP.Models
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string MiddleName { get; set; }
         public string GroupName { get; set; }
         public int GroupId { get; set; }
         public string FacultyName { get; set; }
+        public List<Subject> Subjects{ get; } = new List<Subject>();
         public List<int> Marks { get; } = new List<int>();
-        public string MiddleName { get; set; }
+        
     }
 }

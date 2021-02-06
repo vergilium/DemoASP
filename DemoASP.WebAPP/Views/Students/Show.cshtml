@@ -1,11 +1,14 @@
-﻿@model DemoASP.Models.StudentVM
+﻿@using System.Web.Mvc
+@using System.Web.Mvc.Ajax
+@model DemoASP.Models.StudentVM
 @{
     ViewData["Title"] = "Show";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<a class="btn btn-primary" href="~/Students/List">&lt;&lt;&lt;&nbsp;BACK</a>
+<a class="btn btn-primary" href="~/Students/List">⬅BACK</a>
 
 <h1>Info:</h1>
+
 <div class="row">
     <div class="col-md-1">@Model.FirstName</div>
     <div class="col-md-1">@Model.MiddleName</div>
@@ -30,6 +33,17 @@ else
 
 <form action="~/Marks/Add" method="get">
     <input type="hidden" value="@Model.Id" name="studentId" />
+    <select name="subject" class="subject">
+        @foreach (var i in Model.Subjects)
+        {
+            <option value="@i.Id">@i.Name</option>
+        }
+    </select>
+    <select name="teacher">
+        
+        
+           
+    </select>
     <select name="mark">
         @for(int i=12; i>0; --i)
         {
@@ -38,5 +52,17 @@ else
     </select>
     <input type="submit" />
 </form>
-
+<div class="result"></div>
+<script type="text/javascript">
+$(document).ready(function (){
+  const selectElement = document.querySelector('.subject');
+  
+  selectElement.addEventListener('change', (event) => {
+    const result = document.querySelector('.result');
+    //result.textContent = `You like ${event.target.value}`;
+    $('.result').load('@Url.Action("List", "Subject")?subject='+event.target.value);
+    console.log('ok');
+  });
+});
+</script>
 

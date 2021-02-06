@@ -18,6 +18,20 @@ namespace DomainContext
                .WithMany(p => p.Groups)
                .HasForeignKey(pt => pt.FacultyId);
 
+            modelBuilder.Entity<Faculty>()
+                .HasMany(f => f.Subjects)
+                .WithMany(s => s.Faculties)
+                .UsingEntity<FS>(
+                    fsr => fsr.HasOne(s => s.Subject)
+                        .WithMany(s => s.FS)
+                        .HasForeignKey(s => s.subjectId),
+
+                    fsr => fsr.HasOne(f => f.Faculty)
+                        .WithMany(f => f.FS)
+                        .HasForeignKey(f => f.facultyId)
+                );
+
+
             modelBuilder.Entity<Student>()
                 .HasOne(s => s.Group)
                 .WithMany(st => st.Students)
@@ -73,6 +87,9 @@ namespace DomainContext
             //    .HasForeignKey(m => new { m.Teacher, m.SubjectId });
 
             base.OnModelCreating(modelBuilder);
+            //
+            //Заполненеи таблиц начальными данными
+            //
 
             modelBuilder.Entity<Faculty>().HasData(
                new Faculty { Id = 1, Name = "Программирования" },
@@ -112,7 +129,11 @@ namespace DomainContext
                 new TS { TeacherId = 1, SubjectId = 2 },
                 new TS { TeacherId = 2, SubjectId = 3 });
 
-
+            modelBuilder.Entity<FS>().HasData(
+                new FS {facultyId = 1, subjectId = 1},
+                new FS {facultyId = 1, subjectId = 2},
+                new FS {facultyId = 2, subjectId = 3}
+            );
 
             //modelBuilder.Entity<Mark>().HasData(
             //    new Mark { Id = 1, Value = 12, StudentId = 1 },

@@ -13,5 +13,7 @@ namespace Entities
         [MaxLength(32)]
         public string Name { get; set; }
         public List<Group> Groups { get; set; }
-    }
+        public List<Subject> Subjects { get; set; }
+        public List<FS> FS { get; set; }
+     }
 }

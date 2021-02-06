@@ -15,8 +15,11 @@ namespace Entities
         [Column("name")]
         [MaxLength(128)]
         public string Name { get; set; }
+        public List<Teacher> Teachers { get; set; }
         public List<TS> TS { get; set; }
-        public List<Teacher> Teachers { get; set; } 
         public List<Mark> Marks { get; set; }
+        public List<Faculty> Faculties { get; set; }
+        public List<FS> FS { get; set; }
+        
     }
 }
