@@ -1,9 +1,5 @@
 ﻿using DomainRepositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DemoASP.WebAPP.Controllers
@@ -16,26 +12,25 @@ namespace DemoASP.WebAPP.Controllers
         {
             _repository = repository;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
 
-        public async Task<IActionResult> Add(int? studentId, int? mark, int? subject)
+        public async Task<IActionResult> Add(int? studentId, int? mark, int? subject, int? teacher)
         {
-            if (studentId != null)
+            if (studentId != null && mark != null && subject != null && teacher != null)
             {
-                if (mark != null)
-                    if (subject != null)
-                        await _repository.AddItemAsync(
-                            new Entities.Mark
-                            {
-                                StudentId = studentId.Value,
-                                SubjectId = subject.Value,
-                                Value = mark.Value
-                            });
+                await _repository.AddItemAsync(
+                    new Entities.Mark
+                    {
+                        StudentId = studentId.Value,
+                        SubjectId = subject.Value,
+                        TeacherId = teacher.Value,
+                        Value = mark.Value
+                    });
             }
-            return RedirectToAction("Show", "Subject", new {id = studentId});
+            return RedirectToAction("Show", "Students", new {id = studentId});
         }
     }
 }

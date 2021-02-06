@@ -7,7 +7,7 @@
 }
 <a class="btn btn-primary" href="~/Students/List">⬅BACK</a>
 
-<h1>Info:</h1>
+<h1>Info Students:</h1>
 
 <div class="row">
     <div class="col-md-1">@Model.FirstName</div>
@@ -25,44 +25,39 @@
     {
         <span>@mark; </span>
     }
-}
-else
-{
+} else {
     <label>Has not any marks</label>
 }
 
 <form action="~/Marks/Add" method="get">
     <input type="hidden" value="@Model.Id" name="studentId" />
     <select name="subject" class="subject">
-        @foreach (var i in Model.Subjects)
-        {
+        @foreach (var i in Model.Subjects) {
             <option value="@i.Id">@i.Name</option>
         }
     </select>
-    <select name="teacher">
-        
-        
-           
-    </select>
+    <select name="teacher" class="teacher"></select>
     <select name="mark">
-        @for(int i=12; i>0; --i)
-        {
+        @for(int i=12; i>0; --i) {
             <option value="@i">@i</option>
         }
     </select>
     <input type="submit" />
 </form>
-<div class="result"></div>
+
 <script type="text/javascript">
-$(document).ready(function (){
+$(document).ready(function (oldChild){    
   const selectElement = document.querySelector('.subject');
-  
   selectElement.addEventListener('change', (event) => {
-    const result = document.querySelector('.result');
-    //result.textContent = `You like ${event.target.value}`;
-    $('.result').load('@Url.Action("List", "Subject")?subject='+event.target.value);
-    console.log('ok');
+    $('.teacher').empty();
+    $.getJSON('@Url.Action("List", "Subject")?subject='+event.target.value, (data)=>{
+            $.each(data[0].teachers,  (i, val)=>{
+                $('.teacher').append($(`<option value="${val.id}">${val.firstName + val.lastName}</option>`));
+                })
+    })    
   });
 });
+
+
 </script>
 

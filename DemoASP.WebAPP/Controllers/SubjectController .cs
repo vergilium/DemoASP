@@ -19,7 +19,7 @@ namespace DemoASP.WebAPP.Controllers
     public class SubjectController : Controller
     {
         private readonly ILogger<SubjectController> _logger;
-        private ISubjectRepository _repository;
+        private readonly ISubjectRepository _repository;
 
         public SubjectController(ILogger<SubjectController> logger, ISubjectRepository repository)
         {
@@ -29,12 +29,13 @@ namespace DemoASP.WebAPP.Controllers
 
         public JsonResult List(int subject)
         {
-            return Json(_repository
-                .AllItems
+            var subject_VM = _repository.AllItems
                 .Include(s => s.Teachers)
+                .Include(s => s.Faculties)
                 .Where(s => s.Id == subject)
-                .ToList()
-            );
+                .Select(s => new SubjectVM(s));
+
+            return Json(subject_VM);
         }
     }
 }

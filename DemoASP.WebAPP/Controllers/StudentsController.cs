@@ -19,7 +19,7 @@ namespace DemoASP.WebAPP.Controllers
     public class StudentsController : Controller
     {
         private readonly ILogger<StudentsController> _logger;
-        private IStudentRepository _repository;
+        private readonly IStudentRepository _repository;
 
 
         public StudentsController(ILogger<StudentsController> logger, IStudentRepository repository)

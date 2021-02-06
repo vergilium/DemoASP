@@ -2,10 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace DemoASP.WebAPP.Controllers
 {
@@ -18,10 +15,10 @@ namespace DemoASP.WebAPP.Controllers
             _repository = repository;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
         [Authorize(Policy = "RequireAdministrator")]
         public IActionResult ShowAddStudentForm()
         {

@@ -16,9 +16,9 @@ namespace DemoASP.WebAPP.Controllers
             _repository = repository;
         }
         // GET
-        public IActionResult Index()
-        {
-            return View();
-        }
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
     }
 }
